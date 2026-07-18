@@ -1,0 +1,146 @@
+# =============================================================================
+# Your target companies, mapped to their ATS (researched July 2026).
+# Verify any token/site marked VERIFY before trusting it - ATS choices drift.
+#
+# ats types:  greenhouse | lever | ashby | smartrecruiters | recruitee
+#             workday | amazon | custom
+# =============================================================================
+companies:
+
+  # ---- Standard ATS: work out of the box ------------------------------------
+  - name: Databricks
+    ats: greenhouse
+    token: databricks
+
+  - name: Wealthsimple
+    ats: ashby
+    token: wealthsimple
+
+  - name: CPP Investments
+    ats: smartrecruiters
+    token: CPPInvestmentsInvestissementsRPC
+
+  # ---- Workday: needs tenant + dc + site (read from the careers URL:
+  #      https://{tenant}.{dc}.myworkdayjobs.com/{locale}/{site} ) ------------
+  - name: RBC
+    ats: workday
+    tenant: rbc
+    dc: wd3
+    site: RBCGLOBAL1        # RBCEARLYTALENT1 is the co-op/new-grad site
+
+  - name: TD
+    ats: workday
+    tenant: td
+    dc: wd3
+    site: TD_Bank_Careers
+
+  - name: CIBC
+    ats: workday
+    tenant: cibc
+    dc: wd3
+    site: search           # confirmed (cibc.wd3.myworkdayjobs.com/search);
+    #                        use site: campus for the students/grads board
+
+  - name: Capital One
+    ats: workday
+    tenant: capitalone
+    dc: wd12
+    site: Capital_One
+
+  - name: BlackBerry
+    ats: workday
+    tenant: bb
+    dc: wd3
+    site: BlackBerry
+
+  - name: Cisco
+    ats: workday
+    tenant: cisco
+    dc: wd5
+    site: Cisco_Careers
+
+  # ---- Amazon / AWS: amazon.jobs public API (covers AWS roles) ---------------
+  - name: Amazon / AWS
+    ats: amazon
+
+  # ---- Shopify: bespoke site, parsed from page HTML (no location in markup,
+  #      so skip_location keeps its remote-heavy roles from being filtered) ---
+  - name: Shopify
+    ats: shopify
+    skip_location: true
+    # Optionally add discipline-filtered career URLs to be thorough:
+    # urls:
+    #   - https://www.shopify.com/careers
+
+  # ---- Custom sites: no standard API. Implement custom() in adapters.py per
+  #      site (dev tools -> Network -> find the JSON call), then uncomment. ----
+  # - name: Scotiabank     # jobs.scotiabank.com (bespoke portal)
+  #   ats: custom
+  #   token: scotiabank
+  # - name: AMD            # careers.amd.com (Phenom People)
+  #   ats: custom
+  #   token: amd
+  # - name: Nokia          # jobs.nokia.com/en/sites/CX_1 (Oracle Recruiting)
+  #   ats: custom
+  #   token: nokia
+  # - name: Home Depot     # careers.homedepot.com (VERIFY platform)
+  #   ats: custom
+  #   token: homedepot
+  # - name: Deloitte       # apply.deloitte.com (VERIFY - likely Taleo)
+  #   ats: custom
+  #   token: deloitte
+
+filters:
+  # Title must contain at least one of these (case-insensitive substring).
+  # These cover your target roles: data, PM, investment analyst, ML, quant.
+  keywords:
+    - data engineer
+    - data scientist
+    - data analyst
+    - data platform
+    - machine learning
+    - ml engineer
+    - product manager
+    - product management
+    - investment analyst
+    - quantitative
+    - quant
+
+  # Location must contain at least one of these. Tuned for US + Ontario.
+  # NOTE: US location strings vary a lot across boards, so this is a starter -
+  # add hubs you care about. "canada" is intentionally NOT here (it would let
+  # in every province); Ontario cities are listed explicitly instead. Set
+  # locations: [] to accept everywhere.
+  locations:
+    # Ontario
+    - ontario
+    - toronto
+    - ottawa
+    - waterloo
+    - mississauga
+    - markham
+    - kitchener
+    # United States (country string + major hubs)
+    - united states
+    - new york
+    - san francisco
+    - seattle
+    - bellevue
+    - austin
+    - chicago
+    - boston
+    - atlanta
+    - mountain view
+    - sunnyvale
+    - san jose
+    - washington
+    - mclean
+    - arlington
+    - plano
+    - denver
+    # Remote in North America
+    - remote - us
+    - remote us
+    - remote - canada
+    - remote canada
+    - remote, canada
