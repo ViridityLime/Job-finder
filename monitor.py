@@ -37,10 +37,13 @@ def save_seen(seen):
     STATE.write_text(json.dumps(sorted(seen)))
 
 
-def matches(job, keywords, locations):
+def matches(job, title_groups, locations):
+    # title_groups is a list of groups; the title must contain at least one
+    # term from EVERY group (AND across groups, OR within a group).
     title = job["title"].lower()
-    if keywords and not any(k in title for k in keywords):
-        return False
+    for group in title_groups:
+        if not any(term in title for term in group):
+            return False
     if locations:
         loc = job["location"].lower()
         if not any(l in loc for l in locations):
@@ -51,7 +54,12 @@ def matches(job, keywords, locations):
 def main():
     cfg = load_config()
     filt = cfg.get("filters", {}) or {}
-    keywords = [k.lower() for k in filt.get("keywords", [])]
+    raw_groups = filt.get("title_all_of")
+    if raw_groups:
+        title_groups = [[t.lower() for t in g] for g in raw_groups]
+    else:  # backward-compat: a flat `keywords` list = one OR group
+        kws = [k.lower() for k in filt.get("keywords", [])]
+        title_groups = [kws] if kws else []
     locations = [l.lower() for l in filt.get("locations", [])]
 
     first_run = not STATE.exists()
@@ -77,7 +85,7 @@ def main():
             key = f"{name}:{job['id']}"
             is_new = key not in seen
             seen.add(key)
-            if is_new and matches(job, keywords, loc_filter):
+            if is_new and matches(job, title_groups, loc_filter):
                 hits.append((name, job))
 
     if first_run and os.environ.get("NOTIFY_ON_FIRST_RUN") != "1":
