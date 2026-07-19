@@ -91,20 +91,25 @@ companies:
   #   token: deloitte
 
 filters:
-  # Title must contain at least one of these (case-insensitive substring).
-  # These cover your target roles: data, PM, investment analyst, ML, quant.
-  keywords:
-    - data engineer
-    - data scientist
-    - data analyst
-    - data platform
-    - machine learning
-    - ml engineer
-    - product manager
-    - product management
-    - investment analyst
-    - quantitative
-    - quant
+  # A title matches only if it satisfies EVERY group below (AND across groups;
+  # any one term within a group is enough). This targets Summer/Fall 2027
+  # intern & co-op postings. All matching is case-insensitive substring on the
+  # job TITLE, so a term only counts if it literally appears in the title.
+  title_all_of:
+    # 1) It's an intern / co-op / summer-analyst posting. "analyst"/"associate"
+    #    are broad but safe here: groups 2 and 3 require Summer/Fall + 2027, so
+    #    full-time analyst roles (no term in title) are still excluded.
+    - [intern, internship, "co-op", "co op", coop, apprentice,
+       analyst, associate]
+    # 2) Summer or Fall term (Winter and Spring are intentionally excluded)
+    - [summer, fall, autumn]
+    # 3) The 2027 year
+    - ["2027"]
+    # 4) OPTIONAL - restrict to your fields. Uncomment this group to drop
+    #    off-field intern roles (marketing, ops, etc.). Leaving it commented
+    #    means you see ALL Summer/Fall 2027 intern roles at these companies.
+    # - [data, "machine learning", " ml", "ml ", quant, product,
+    #    investment, analytics, "software eng"]
 
   # Location must contain at least one of these. Tuned for US + Ontario.
   # NOTE: US location strings vary a lot across boards, so this is a starter -
