@@ -26,7 +26,7 @@ companies:
     ats: workday
     tenant: rbc
     dc: wd3
-    site: RBCGLOBAL1        # RBCEARLYTALENT1 is the co-op/new-grad site
+    site: RBCEARLYTALENT1   # student / co-op / new-grad board (was RBCGLOBAL1)
 
   - name: TD
     ats: workday
@@ -38,8 +38,7 @@ companies:
     ats: workday
     tenant: cibc
     dc: wd3
-    site: search           # confirmed (cibc.wd3.myworkdayjobs.com/search);
-    #                        use site: campus for the students/grads board
+    site: campus            # students/grads board (was 'search', all roles)
 
   - name: Capital One
     ats: workday
@@ -110,6 +109,20 @@ filters:
     #    means you see ALL Summer/Fall 2027 intern roles at these companies.
     # - [data, "machine learning", " ml", "ml ", quant, product,
     #    investment, analytics, "software eng"]
+
+  # Terms used to search LARGE boards (Workday, Amazon) server-side, so we pull
+  # a focused set instead of hitting page limits. Small ATS ignore this and
+  # return everything. Keep these aligned with group 1 above (intern signals).
+  search:
+    - intern
+    - internship
+    - co-op
+    - coop
+    - apprentice
+    - graduate
+    - student
+    - summer
+    - fall
 
   # Location must contain at least one of these. Tuned for US + Ontario.
   # NOTE: US location strings vary a lot across boards, so this is a starter -
