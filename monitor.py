@@ -61,6 +61,9 @@ def main():
         kws = [k.lower() for k in filt.get("keywords", [])]
         title_groups = [kws] if kws else []
     locations = [l.lower() for l in filt.get("locations", [])]
+    # Terms sent to server-side search on large boards (Workday, Amazon) so we
+    # fetch a focused set instead of hitting page caps. Small ATS ignore this.
+    search_terms = [s.lower() for s in filt.get("search", [])]
 
     first_run = not STATE.exists()
     seen = load_seen()
@@ -73,7 +76,7 @@ def main():
             print(f"! unknown ats '{ats}' for {name}", file=sys.stderr)
             continue
         try:
-            jobs = fetch(c, keywords)
+            jobs = fetch(c, search_terms)
         except Exception as e:  # one bad board must not kill the whole run
             print(f"! {name} ({ats}) failed: {e}", file=sys.stderr)
             continue
@@ -102,5 +105,5 @@ def main():
     print(f"Done. Tracking {len(seen)} jobs; {len(hits)} match this run.")
 
 
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()
