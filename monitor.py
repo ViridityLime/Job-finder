@@ -102,8 +102,5 @@ def main():
     print(f"Done. Tracking {len(seen)} jobs; {len(hits)} match this run.")
 
 
-if __name__ == "__main__":
-       import notify
-       notify.send("TEST", {"title": "Test ping from job-watcher",
-                             "location": "Toronto", "url": "https://example.com"})
-       main()
+    if __name__ == "__main__":
+        main()
