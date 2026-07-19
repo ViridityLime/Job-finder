@@ -103,4 +103,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+       import notify
+       notify.send("TEST", {"title": "Test ping from job-watcher",
+                             "location": "Toronto", "url": "https://example.com"})
+       main()
