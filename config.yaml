@@ -58,6 +58,13 @@ companies:
     dc: wd5
     site: Cisco_Careers
 
+  - name: Brookfield
+    ats: workday
+    tenant: brookfield
+    dc: wd5
+    site: brookfield       # main BAM site (investments/asset mgmt/analyst roles)
+    #                        'brookfieldproperties' is the real-estate arm
+
   # ---- Amazon / AWS: amazon.jobs public API (covers AWS roles) ---------------
   - name: Amazon / AWS
     ats: amazon
